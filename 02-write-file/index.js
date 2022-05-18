@@ -9,11 +9,21 @@ const readline = require('readline').createInterface({
 })
 
 writableStream.on('error', () => {
-   console.log('Good bie');
+   console.log('error');
 })
-readline.question('What\'s your name?', (name) => {
-   console.log('Hi ', name);
-   writableStream.write(name);
+readline.on('SIGINT', () => {
+   console.log('Good bie');
    readline.close();
 })
 
+console.log('Please enter data')
+readline.on('line', (data) => {
+   if (data == 'exit') {
+      console.log("Good luck!")
+      readline.close();
+   }
+   else {
+      writableStream.write(data + '\n');
+      readline.pause;
+   }
+})
