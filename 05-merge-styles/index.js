@@ -12,7 +12,7 @@ const mergeStyles = async function () {
          const stream = fs.createReadStream(path.resolve(__dirname, 'styles', file.name), 'utf-8')
          stream.on('data', (chunk) => {
             // arr += chunk + '\n';
-            writableStream.write(chunk.toString());
+            writableStream.write(chunk.toString() + '\n');
          })
       }
    }
