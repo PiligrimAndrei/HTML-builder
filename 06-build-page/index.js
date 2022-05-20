@@ -41,7 +41,6 @@ const htmlBuilder = async function () {
             } else i++;
          })
       }
-
    })
 
    // file to Array
@@ -57,13 +56,31 @@ const htmlBuilder = async function () {
          rl.once('close', () => resolve(strings));
          rl.once('error', (err) => reject(err));
       });
-
       return res;
    }
 }
 htmlBuilder();
 
-
+const copyDir = async function () {
+   const files = await fsPromises.readdir(path.resolve(__dirname, 'assets'), { withFileTypes: true });
+   const rmdir = await fsPromises.rm(path.resolve(__dirname, 'project-dist', 'assets'), { recursive: true, force: true });
+   const mkdir = await fsPromises.mkdir(path.resolve(__dirname, 'project-dist', 'assets'), { recursive: true });
+   for (const file of files) {
+      if (file.isFile()) {
+         const copy = await fsPromises.copyFile(path.resolve(__dirname, 'assets', file.name), path.resolve(__dirname, 'project-dist', 'assets', file.name));
+      }
+      else if (file.isDirectory()) {
+         const mkdirNew = await fsPromises.mkdir(path.resolve(__dirname, 'project-dist', 'assets', file.name), { recursive: true });
+         const filesNewDir = await fsPromises.readdir(path.resolve(__dirname, 'assets', file.name), { withFileTypes: true });
+         for (const newfile of filesNewDir) {
+            if (newfile.isFile()) {
+               const copy = await fsPromises.copyFile(path.resolve(__dirname, 'assets', file.name, newfile.name), path.resolve(__dirname, 'project-dist', 'assets', file.name, newfile.name));
+            }
+         }
+      }
+   }
+}
+copyDir()
 
 /*/const templatePath = path.join(__dirname, 'template.html');
    fileToArray(templatePath).then((arr) => chaingeTemplate(arr)).then((arr) => console.log('arrOUT', arr));
