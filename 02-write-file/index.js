@@ -18,7 +18,7 @@ readline.on('SIGINT', () => {
 
 console.log('Please enter data')
 readline.on('line', (data) => {
-   if (data == 'exit') {
+   if (data.toLowerCase() == "exit") {
       console.log("Good luck!")
       readline.close();
    }

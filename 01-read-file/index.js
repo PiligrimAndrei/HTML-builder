@@ -7,7 +7,3 @@ stream.on('data', (chunk) => {
    console.log(chunk)
 })
 stream.on('error', (err) => console.log(err))
-
-
-
-//node 01-read-file/index.js
